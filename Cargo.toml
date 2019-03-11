@@ -7,3 +7,4 @@ edition = "2018"
 [dependencies]
 libc = "^0.2"
 nix = "^0.13"
+structopt = "^0.2"
