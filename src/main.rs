@@ -1,6 +1,9 @@
 mod error;
 mod sys;
 
+#[cfg(test)]
+mod test;
+
 use std::path::{Path, PathBuf};
 
 use structopt::StructOpt;
