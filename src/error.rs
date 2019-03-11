@@ -1,9 +1,10 @@
+#[derive(Debug)]
 pub enum ErrorKind {
     SysError(String),
     NixError(nix::Error),
-    UnknownError(String),
 }
 
+#[derive(Debug)]
 pub struct Error {
     kind: ErrorKind,
 }
@@ -20,12 +21,6 @@ impl Error {
     pub fn nix_error(err: nix::Error) -> Self {
         Self {
             kind: NixError(err),
-        }
-    }
-
-    pub fn unknown_error(msg: String) -> Self {
-        Self {
-            kind: UnknownError(msg),
         }
     }
 }

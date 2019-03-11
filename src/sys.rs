@@ -27,8 +27,8 @@ pub fn exec(path: &Path) -> Result<Pid, Error> {
 pub struct WaitOutput {
     pub code: i32,
     pub signal: Option<Signal>,
-    pub time: u64,
-    pub memory: usize,
+    pub time: u64,     // in ms
+    pub memory: usize, // in kb
 }
 
 pub fn wait(pid: Pid) -> Result<WaitOutput, Error> {
@@ -51,7 +51,7 @@ pub fn wait(pid: Pid) -> Result<WaitOutput, Error> {
             + ru.ru_utime.tv_usec / 1000)
             .max(0) as u64;
 
-        let memory = (ru.ru_maxrss as usize) * 1024;
+        let memory = ru.ru_maxrss as usize;
 
         if p == -1 {
             return Err(Error::sys_error("fail to wait child process".into()));
