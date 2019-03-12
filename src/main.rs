@@ -4,6 +4,8 @@ mod sys;
 #[cfg(test)]
 mod test;
 
+use sys::*;
+
 use std::path::{Path, PathBuf};
 
 use structopt::StructOpt;
@@ -15,35 +17,24 @@ struct Opt {
     target: PathBuf,
 }
 
-pub fn run(path: &Path) -> Result<(), ()> {
-    let pid = sys::exec(&path).map_err(|e| {
-        eprintln!("{:?}", e);
-    })?;
-
-    let output = sys::wait(pid).map_err(|e| {
-        eprintln!("{:?}", e);
-    })?;
-
-    eprintln!("code: {}", output.code);
-
-    if let Some(sig) = output.signal {
-        eprintln!("signal: {}", sig);
+pub fn run(path: &Path) -> Result<WaitOutput, String> {
+    if !path.is_file() {
+        return Err(format!("No such file: {:?}", path));
     }
 
-    eprintln!("time: {} ms", output.time);
-
-    if output.memory > 10240 {
-        eprintln!("memory: {} MB", output.memory / 1024);
-    } else {
-        eprintln!("memory: {} KB", output.memory);
-    }
-
-    Ok(())
+    exec(&path)
+        .map_err(|e| format!("{:?}\n", e))
+        .and_then(|pid| wait(pid).map_err(|e| format!("{:?}\n", e)))
 }
 
 fn main() {
     let opt = Opt::from_args();
-    if run(&opt.target).is_err() {
-        std::process::exit(1)
+
+    match run(&opt.target) {
+        Err(msg) => {
+            eprintln!("{}", msg);
+            std::process::exit(1);
+        }
+        Ok(out) => eprintln!("{}", out),
     }
 }

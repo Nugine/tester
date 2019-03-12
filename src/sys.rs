@@ -1,6 +1,7 @@
 use crate::error::Error;
 
 use std::ffi::CString;
+use std::fmt::Display;
 use std::path::Path;
 
 use nix::sys::signal::Signal;
@@ -18,17 +19,42 @@ pub fn exec(path: &Path) -> Result<Pid, Error> {
     match r {
         Parent { child } => Ok(child),
         Child => {
-            let _ = nix::unistd::execve(&p, &[], &[]);
-            std::process::exit(0);
+            let r = nix::unistd::execve(&p, &[], &[]);
+
+            if r.is_err() {
+                eprintln!("fail to execute path: {:?}", p);
+                std::process::exit(127);
+            } else {
+                std::process::exit(0);
+            }
         }
     }
 }
 
+#[derive(Debug)]
 pub struct WaitOutput {
     pub code: i32,
     pub signal: Option<Signal>,
     pub time: u64,     // in ms
     pub memory: usize, // in kb
+}
+
+impl Display for WaitOutput {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        writeln!(f, "code: {}", self.code)?;
+
+        if let Some(sig) = self.signal {
+            writeln!(f, "signal: {}", sig)?;
+        }
+
+        writeln!(f, "time: {} ms", self.time)?;
+
+        if self.memory > 4096 {
+            write!(f, "memory: {} MB", (self.memory as f64) / 1024.0)
+        } else {
+            write!(f, "memory: {} KB", self.memory)
+        }
+    }
 }
 
 pub fn wait(pid: Pid) -> Result<WaitOutput, Error> {

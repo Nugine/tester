@@ -12,6 +12,17 @@
     time: 0 ms
     memory: 1384 KB
 
+    $ tester ~/a+b < a+b.in
+    3
+    code: 0
+    time: 0 ms
+    memory: 1660 KB
+
+    $ tester ~/a+b < a+b.in > a+b.out
+    code: 0
+    time: 0 ms
+    memory: 1692 KB
+
 ## Usage
 
     tester 0.1.0
