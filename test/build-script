@@ -1,0 +1,5 @@
+gcc hello.c -o hello
+g++ mem.cpp -o mem
+gcc ret1.c -o ret1
+gcc seg.c -o seg
+gcc tim.c -o tim

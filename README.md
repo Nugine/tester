@@ -25,7 +25,7 @@
 
 ## Usage
 
-    tester 0.1.0
+    tester 0.2.0
     Nugine <Nugine@163.com>
 
     USAGE:
@@ -37,3 +37,7 @@
 
     ARGS:
         <target> 
+
+## Todo
+
+more test cases!

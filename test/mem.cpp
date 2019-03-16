@@ -1,7 +1,9 @@
 #include <cstdio>
+#include <cstring>
 
 int main() {
-    long long a[1001][1001] = {0};
-    printf("a: %lu\n", sizeof(a));
+    int lim = 2 * 100000;
+    long long *a = new long long[lim];
+    memset(a, 0, lim);
     return 0;
 }

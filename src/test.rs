@@ -31,7 +31,46 @@ fn test_mem() {
     assert_eq!(out.code, Some(0));
     assert_eq!(out.signal, None);
     assert!(out.time < 20);
-    assert!(out.memory > 9000 && out.memory < 10000);
+    assert!(out.memory > 2500 && out.memory < 3000);
+}
+
+#[test]
+fn test_ret1() {
+    let r = Tester::new(&PathBuf::from("./test/ret1")).run();
+    assert!(r.is_ok());
+    let out = r.unwrap();
+    dbg!(&out);
+    assert_eq!(out.code, Some(1));
+    assert_eq!(out.signal, None);
+    assert!(out.time < 10);
+    assert!(out.memory < 1800);
+}
+
+#[cfg(unix)]
+#[test]
+fn test_seg() {
+    let r = Tester::new(&PathBuf::from("./test/seg")).run();
+    assert!(r.is_ok());
+    let out = r.unwrap();
+    dbg!(&out);
+    assert_eq!(out.code, None);
+    assert_eq!(out.signal, Some("SIGSEGV".into()));
+    assert!(out.time < 10);
+    assert!(out.memory < 1800);
+}
+
+#[cfg(windows)]
+#[test]
+fn test_seg() {
+    let r = Tester::new(&PathBuf::from("./test/seg")).run();
+    assert!(r.is_ok());
+    let out = r.unwrap();
+    dbg!(&out);
+    assert!(out.code.is_some());
+    assert_ne!(out.code, Some(0));
+    assert_eq!(out.signal, None);
+    assert!(out.time < 10);
+    assert!(out.memory < 1500);
 }
 
 #[test]
