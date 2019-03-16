@@ -1,26 +1,26 @@
-#[derive(Debug)]
-pub enum ErrorKind {
-    SysError(String),
-    NixError(nix::Error),
-}
+use std::fmt::Display;
 
 #[derive(Debug)]
 pub struct Error {
-    kind: ErrorKind,
+    message: String,
 }
 
-use ErrorKind::*;
-
 impl Error {
-    pub fn sys_error(msg: String) -> Self {
+    pub fn new(msg: &str) -> Self {
         Self {
-            kind: SysError(msg),
+            message: msg.into(),
         }
     }
 
-    pub fn nix_error(err: nix::Error) -> Self {
+    pub fn msg(&self) -> &str {
+        &self.message
+    }
+}
+
+impl<T: Display> From<T> for Error {
+    fn from(error: T) -> Self {
         Self {
-            kind: NixError(err),
+            message: format!("{}", error),
         }
     }
 }
