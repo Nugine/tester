@@ -14,7 +14,9 @@ use structopt::StructOpt;
 fn main() {
     let opt = Opt::from_args();
 
-    let tester = Tester::new(&opt.target);
+    dbg!(&opt.args);
+
+    let tester = Tester::new(opt.target, opt.args);
 
     match tester.run() {
         Err(err) => {

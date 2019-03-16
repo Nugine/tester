@@ -7,7 +7,7 @@ mod windows;
 use crate::error::Error;
 use crate::output::Output;
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 pub trait TraitTester {
     fn run(&self) -> Result<Output, Error>;
@@ -15,12 +15,11 @@ pub trait TraitTester {
 
 pub struct Tester {
     path: PathBuf,
+    args: Vec<String>,
 }
 
 impl Tester {
-    pub fn new(path: &Path) -> Self {
-        Self {
-            path: path.to_owned(),
-        }
+    pub fn new(path: PathBuf, args: Vec<String>) -> Self {
+        Self { path, args }
     }
 }

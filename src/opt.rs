@@ -7,4 +7,7 @@ use structopt::StructOpt;
 pub struct Opt {
     #[structopt(parse(from_os_str))]
     pub target: PathBuf,
+
+    #[structopt(short = "a", long = "arg")]
+    pub args: Vec<String>,
 }

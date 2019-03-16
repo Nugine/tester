@@ -21,7 +21,10 @@ fn u32_to_i32(u: u32) -> Option<i32> {
 
 impl TraitTester for Tester {
     fn run(&self) -> Result<Output, Error> {
-        let child = Command::new(&self.path).spawn().map_err(Error::from)?;
+        let child = Command::new(&self.path)
+            .args(&self.args)
+            .spawn()
+            .map_err(Error::from)?;
 
         let pid = Some(child.id())
             .and_then(u32_to_i32)

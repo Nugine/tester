@@ -4,7 +4,7 @@ use std::path::PathBuf;
 
 #[test]
 fn test_ok() {
-    let r = Tester::new(&PathBuf::from("./test/hello")).run();
+    let r = Tester::new(PathBuf::from("./test/hello"), Vec::new()).run();
     assert!(r.is_ok());
     let out = r.unwrap();
     dbg!(&out);
@@ -16,7 +16,7 @@ fn test_ok() {
 
 #[test]
 fn test_err() {
-    let r = Tester::new(&PathBuf::from("./test/")).run();
+    let r = Tester::new(PathBuf::from("./test/"), Vec::new()).run();
     assert!(r.is_err());
     let e = r.unwrap_err();
     assert_eq!(e.msg(), "Permission denied (os error 13)");
@@ -24,7 +24,7 @@ fn test_err() {
 
 #[test]
 fn test_mem() {
-    let r = Tester::new(&PathBuf::from("./test/mem")).run();
+    let r = Tester::new(PathBuf::from("./test/mem"), Vec::new()).run();
     assert!(r.is_ok());
     let out = r.unwrap();
     dbg!(&out);
@@ -36,7 +36,7 @@ fn test_mem() {
 
 #[test]
 fn test_ret1() {
-    let r = Tester::new(&PathBuf::from("./test/ret1")).run();
+    let r = Tester::new(PathBuf::from("./test/ret1"), Vec::new()).run();
     assert!(r.is_ok());
     let out = r.unwrap();
     dbg!(&out);
@@ -49,7 +49,7 @@ fn test_ret1() {
 #[cfg(unix)]
 #[test]
 fn test_seg() {
-    let r = Tester::new(&PathBuf::from("./test/seg")).run();
+    let r = Tester::new(PathBuf::from("./test/seg"), Vec::new()).run();
     assert!(r.is_ok());
     let out = r.unwrap();
     dbg!(&out);
@@ -62,7 +62,7 @@ fn test_seg() {
 #[cfg(windows)]
 #[test]
 fn test_seg() {
-    let r = Tester::new(&PathBuf::from("./test/seg")).run();
+    let r = Tester::new(PathBuf::from("./test/seg"), Vec::new()).run();
     assert!(r.is_ok());
     let out = r.unwrap();
     dbg!(&out);
@@ -75,7 +75,7 @@ fn test_seg() {
 
 #[test]
 fn test_tim() {
-    let r = Tester::new(&PathBuf::from("./test/tim")).run();
+    let r = Tester::new(PathBuf::from("./test/tim"), Vec::new()).run();
     assert!(r.is_ok());
     let out = r.unwrap();
     dbg!(&out);

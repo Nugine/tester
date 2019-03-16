@@ -48,7 +48,10 @@ unsafe fn get_memory(h_process: RawHandle) -> Result<u64, Error> {
 
 impl TraitTester for Tester {
     fn run(&self) -> Result<Output, Error> {
-        let mut child = Command::new(&self.path).spawn().map_err(Error::from)?;
+        let mut child = Command::new(&self.path)
+            .args(&self.args)
+            .spawn()
+            .map_err(Error::from)?;
         let status = child.wait().map_err(Error::from)?;
 
         let code: Option<i64> = status.code().map(i64::from);
