@@ -7,19 +7,19 @@ mod windows;
 use crate::error::Error;
 use crate::output::Output;
 
-use std::path::PathBuf;
+use std::ffi::OsString;
 
 pub trait TraitTester {
     fn run(&self) -> Result<Output, Error>;
 }
 
 pub struct Tester {
-    path: PathBuf,
-    args: Vec<String>,
+    target: OsString,
+    args: Vec<OsString>,
 }
 
 impl Tester {
-    pub fn new(path: PathBuf, args: Vec<String>) -> Self {
-        Self { path, args }
+    pub fn new(target: OsString, args: Vec<OsString>) -> Self {
+        Self { target, args }
     }
 }

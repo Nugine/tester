@@ -1,10 +1,17 @@
 use std::fmt::Display;
 
 #[derive(Debug)]
+pub struct Time {
+    pub real: u64,
+    pub user: u64,
+    pub sys: u64,
+}
+
+#[derive(Debug)]
 pub struct Output {
     pub code: Option<i64>,
     pub signal: Option<String>,
-    pub time: u64,   // in ms
+    pub time: Time,  // in ms
     pub memory: u64, // in kb
 }
 
@@ -18,7 +25,9 @@ impl Display for Output {
             writeln!(f, "signal: {}", sig)?;
         }
 
-        writeln!(f, "time: {} ms", self.time)?;
+        writeln!(f, "real time: {} ms", self.time.real)?;
+        writeln!(f, "user time: {} ms", self.time.user)?;
+        writeln!(f, "sys time: {} ms", self.time.sys)?;
 
         if self.memory > 4096 {
             write!(f, "memory: {:.3} MB", (self.memory as f64) / 1024.0)

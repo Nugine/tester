@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::ffi::OsString;
 
 use structopt::StructOpt;
 
@@ -6,8 +6,8 @@ use structopt::StructOpt;
 #[structopt(name = "tester")]
 pub struct Opt {
     #[structopt(parse(from_os_str))]
-    pub target: PathBuf,
+    pub target: OsString,
 
-    #[structopt(short = "a", long = "arg")]
-    pub args: Vec<String>,
+    #[structopt(short = "a", long = "arg", parse(from_os_str))]
+    pub args: Vec<OsString>,
 }

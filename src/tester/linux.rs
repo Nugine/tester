@@ -1,10 +1,11 @@
 use super::{Tester, TraitTester};
 
 use crate::error::Error;
-use crate::output::Output;
+use crate::output::{Output, Time};
 
 use std::os::unix::process::ExitStatusExt;
 use std::process::{Command, ExitStatus};
+use std::time::SystemTime;
 
 use nix::sys::signal::Signal;
 use nix::unistd::Pid;
@@ -21,7 +22,9 @@ fn u32_to_i32(u: u32) -> Option<i32> {
 
 impl TraitTester for Tester {
     fn run(&self) -> Result<Output, Error> {
-        let child = Command::new(&self.path)
+        let t0 = SystemTime::now();
+
+        let child = Command::new(&self.target)
             .args(&self.args)
             .spawn()
             .map_err(Error::from)?;
@@ -45,7 +48,17 @@ impl TraitTester for Tester {
                 return Err(Error::new("fail to wait child process"));
             }
 
-            let time: u64 = (ru.ru_utime.tv_sec * 1000 + ru.ru_utime.tv_usec / 1000).max(0) as u64;
+            let real = t0
+                .elapsed()
+                .map(|d| d.as_millis() as u64)
+                .map_err(Error::from)?;
+
+            let time = Time {
+                real,
+                user: (ru.ru_utime.tv_sec * 1000 + ru.ru_utime.tv_usec / 1000).max(0) as u64,
+                sys: (ru.ru_stime.tv_sec * 1000 + ru.ru_stime.tv_usec / 1000).max(0) as u64,
+            };
+
             let memory: u64 = ru.ru_maxrss.max(0) as u64;
             let status = ExitStatus::from_raw(status);
 
