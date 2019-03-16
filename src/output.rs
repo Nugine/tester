@@ -21,7 +21,7 @@ impl Display for Output {
         writeln!(f, "time: {} ms", self.time)?;
 
         if self.memory > 4096 {
-            write!(f, "memory: {} MB", (self.memory as f64) / 1024.0)
+            write!(f, "memory: {:.3} MB", (self.memory as f64) / 1024.0)
         } else {
             write!(f, "memory: {} KB", self.memory)
         }
