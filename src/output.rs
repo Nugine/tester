@@ -1,13 +1,15 @@
 use std::fmt::Display;
 
-#[derive(Debug)]
+use serde::Serialize;
+
+#[derive(Debug, Serialize)]
 pub struct Time {
     pub real: u64,
     pub user: u64,
     pub sys: u64,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Output {
     pub code: Option<i64>,
     pub signal: Option<String>,

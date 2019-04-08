@@ -10,4 +10,7 @@ pub struct Opt {
 
     #[structopt(short = "a", long = "arg", parse(from_os_str))]
     pub args: Vec<OsString>,
+
+    #[structopt(short = "j", long = "json", help = "json output (stderr)")]
+    pub json: bool,
 }

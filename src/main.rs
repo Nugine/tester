@@ -18,12 +18,15 @@ fn main() {
 
     match tester.run() {
         Err(err) => {
-            eprintln!("{}", err.msg());
+            eprintln!("tester: {}", err.msg());
             std::process::exit(1);
         }
         Ok(out) => {
-            eprintln!("{}", out);
-            std::process::exit(0);
+            if opt.json {
+                eprintln!("{}", serde_json::to_string(&out).unwrap());
+            } else {
+                eprintln!("{}", out);
+            }
         }
     }
 }

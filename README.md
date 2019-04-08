@@ -31,14 +31,15 @@
 
 ## Usage
 
-    tester 0.2.2
-    Nugine <Nugine@163.com>
+    tester 0.2.3
+    Nugine <nugine@foxmail.com>
 
     USAGE:
-        tester [OPTIONS] <target>
+        tester [FLAGS] [OPTIONS] <target>
 
     FLAGS:
         -h, --help       Prints help information
+        -j, --json       json output (stderr)
         -V, --version    Prints version information
 
     OPTIONS:
@@ -46,6 +47,25 @@
 
     ARGS:
         <target>
+
+## Output declaration
+
+```typescript
+declare type TesterOutput = ({
+    code: number
+    signal: null
+} | {
+    code: null,
+    signal: string
+}) & {
+    time: {
+        real: number,
+        user: number,
+        sys: number
+    },
+    memory: number
+}
+```
 
 ## Todo
 
