@@ -11,21 +11,42 @@ use crate::tester::{Tester, TraitTester};
 
 use structopt::StructOpt;
 
+#[inline(always)]
+fn err_exit<E: std::fmt::Display>(e: E) -> ! {
+    eprintln!("tester: {}", e);
+    std::process::exit(1)
+}
+
 fn main() {
     let opt = Opt::from_args();
 
-    let tester = Tester::new(opt.target, opt.args);
+    let json = opt.json;
 
+    use std::io::Write;
+    let mut output_file: Box<dyn Write> = match opt.output {
+        None => Box::new(std::io::stderr()),
+        Some(ref path) => match std::fs::File::create(path) {
+            Err(e) => err_exit(e),
+            Ok(f) => Box::new(f),
+        },
+    };
+
+    let tester = Tester::new(opt.target, opt.args);
     match tester.run() {
         Err(err) => {
-            eprintln!("tester: {}", err.msg());
-            std::process::exit(1);
+            if let Err(e) = writeln!(output_file, "tester: {}", err.msg()) {
+                err_exit(e)
+            }
         }
         Ok(out) => {
-            if opt.json {
-                eprintln!("{}", serde_json::to_string(&out).unwrap());
+            let out_string = if json {
+                serde_json::to_string(&out).unwrap()
             } else {
-                eprintln!("{}", out);
+                format!("{}", out)
+            };
+
+            if let Err(e) = writeln!(output_file, "{}", out_string) {
+                err_exit(e)
             }
         }
     }

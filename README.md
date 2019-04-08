@@ -27,16 +27,19 @@
 
 ## Usage
 
-    tester 0.3.0
+    tester 0.3.1
     Nugine <nugine@foxmail.com>
 
     USAGE:
-        tester [FLAGS] <target> [-- <args>...]
+        tester [FLAGS] [OPTIONS] <target> [-- <args>...]
 
     FLAGS:
         -h, --help       Prints help information
-        -j, --json       json output (stderr)
+        -j, --json       Json output
         -V, --version    Prints version information
+
+    OPTIONS:
+        -o, --output <output>    output file path (default stderr)
 
     ARGS:
         <target>     command to run
@@ -62,6 +65,8 @@ declare type TesterOutput = ({
 ```
 
 ## Changelog
+
++ Add option `--output` on `0.3.1`
 
 + Break changes on `0.3.0`
 
