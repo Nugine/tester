@@ -1,6 +1,6 @@
 [package]
 name = "tester"
-version = "0.2.3"
+version = "0.3.0"
 authors = ["Nugine <nugine@foxmail.com>"]
 edition = "2018"
 

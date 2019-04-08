@@ -5,12 +5,12 @@ use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
 #[structopt(name = "tester")]
 pub struct Opt {
-    #[structopt(parse(from_os_str))]
+    #[structopt(parse(from_os_str), help = "command to run")]
     pub target: OsString,
-
-    #[structopt(short = "a", long = "arg", parse(from_os_str))]
-    pub args: Vec<OsString>,
 
     #[structopt(short = "j", long = "json", help = "json output (stderr)")]
     pub json: bool,
+
+    #[structopt(last = true, parse(from_os_str), help = "arguments to be passed")]
+    pub args: Vec<OsString>,
 }

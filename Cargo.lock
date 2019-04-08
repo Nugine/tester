@@ -184,7 +184,7 @@ dependencies = [
 
 [[package]]
 name = "tester"
-version = "0.2.3"
+version = "0.3.0"
 dependencies = [
  "libc 0.2.50 (registry+https://github.com/rust-lang/crates.io-index)",
  "nix 0.13.0 (registry+https://github.com/rust-lang/crates.io-index)",

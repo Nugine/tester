@@ -22,31 +22,25 @@
     sys time: 4 ms
     memory: 2124 KB
 
-    $ tester ping -a=-c --arg=5 -a=www.baidu.com > /dev/null
-    code: 0
-    real time: 4184 ms
-    user time: 3 ms
-    sys time: 6 ms
-    memory: 2936 KB
+    $ tester -j ping -- www.baidu.com -c 5 > /dev/null 
+    {"code":0,"signal":null,"time":{"real":4051,"user":4,"sys":4},"memory":2748}
 
 ## Usage
 
-    tester 0.2.3
+    tester 0.3.0
     Nugine <nugine@foxmail.com>
 
     USAGE:
-        tester [FLAGS] [OPTIONS] <target>
+        tester [FLAGS] <target> [-- <args>...]
 
     FLAGS:
         -h, --help       Prints help information
         -j, --json       json output (stderr)
         -V, --version    Prints version information
 
-    OPTIONS:
-        -a, --arg <args>...    
-
     ARGS:
-        <target>
+        <target>     command to run
+        <args>...    arguments to be passed
 
 ## Output declaration
 
@@ -66,6 +60,14 @@ declare type TesterOutput = ({
     memory: number
 }
 ```
+
+## Changelog
+
++ Break changes on `0.3.0`
+
+    delete `--arg`
+
+    pass arguments by `[-- <args>...]`
 
 ## Todo
 
